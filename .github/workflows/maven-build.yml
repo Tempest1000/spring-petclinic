@@ -10,10 +10,9 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
+  build_and_test:
+    name: Build and Test
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -32,3 +31,16 @@ jobs:
           name: code-coverage-report
           path: target/site/jacoco/jacoco.xml
           retention-days: 1
+
+  parse_coverage:
+    name: Parse Coverage
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download coverage report
+        uses: actions/download-artifact@v3
+        with:
+          name: code-coverage-report
+#      - name: Parve Coverage Report with Groovy
+#        run: groovy
