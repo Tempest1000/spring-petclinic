@@ -42,7 +42,7 @@ test {
 }
 
 task transform {
-  def filePath = "target/site/jacoco/jacoco.xml"
+  def filePath = "jacoco.xml"
   def parser = new groovy.xml.XmlSlurper()
   parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
   parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
