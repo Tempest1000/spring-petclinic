@@ -38,27 +38,25 @@ jobs:
       - name: Transform Code Coverage Results
         run: ./gradlew transform
 
-#   parse_coverage:
-#     name: Parse Coverage
-#     needs: build_and_test
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Download coverage report
-#         uses: actions/download-artifact@v3
-#         with:
-#           name: code-coverage-report
-#       - name: Print working directory
-#         run: pwd
-#       - name: Display structure of downloaded files
-#         run: ls -R
-#       - uses: actions/checkout@v2
-#       - name: Set up JDK 11
-#         uses: actions/setup-java@v2
-#         with:
-#           java-version: '11'
-#           distribution: 'adopt'
-#       - name: Grant Permissions to Gradle Wrapper
-#         run: chmod +x gradlew
-#       - name: Run Gradle Task with Gradle Wrapper
-#         run: ./gradlew transform
+  parse_coverage:
+    name: Parse Coverage
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download coverage report
+        uses: actions/download-artifact@v3
+        with:
+          name: code-coverage-report
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Grant Permissions to Gradle Wrapper
+        run: chmod +x gradlew
+      - name: Check Code Coverage File Exists (local)
+        run: ./gradlew checkExistsLocal
+      - name: Check Code Coverage File Exists (FQ)
+        run: ./gradlew checkExists
