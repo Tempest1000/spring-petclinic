@@ -52,6 +52,17 @@ task checkExists {
   }
 }
 
+task checkExistsLocal {
+  def jacoco = "jacoco.xml";
+  println "***checkExistsLocal: ${new File(".").absolutePath}"
+  if (project.file(jacoco).exists()) {
+      println "found: ${project.file(jacoco)}"
+  } else {
+      def message = "missing: ${project.file(jacoco)}"
+      println message
+  }
+}
+
 task transform {
   def jacoco = "target/site/jacoco/jacoco.xml";
   ext.srcFile = project.file(jacoco)
