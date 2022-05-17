@@ -43,23 +43,11 @@ test {
 
 task checkExists {
   def jacoco = "target/site/jacoco/jacoco.xml";
-  println "***checkExistsFq: ${new File(".").absolutePath}"
+  println "***current working directory: ${new File(".").absolutePath}"
   if (project.file(jacoco).exists()) {
       println "found: ${project.file(jacoco)}"
   } else {
-      def message = "missing: ${project.file(jacoco)}"
-      println message
-  }
-}
-
-task checkExistsLocal {
-  def jacoco = "jacoco.xml";
-  println "***checkExistsLocal: ${new File(".").absolutePath}"
-  if (project.file(jacoco).exists()) {
-      println "found: ${project.file(jacoco)}"
-  } else {
-      def message = "missing: ${project.file(jacoco)}"
-      println message
+      println "missing: ${project.file(jacoco)}"
   }
 }
 
