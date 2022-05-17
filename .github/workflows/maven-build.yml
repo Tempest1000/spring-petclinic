@@ -33,9 +33,9 @@ jobs:
           retention-days: 1
       - name: Grant Permissions to Gradle Wrapper
         run: chmod +x gradlew
-      - name: Check File Exists
-        run: ./gradlew checkExistsFq
-      - name: Run Gradle Task with Gradle Wrapper
+      - name: Check Code Coverage File Exists
+        run: ./gradlew checkExistsF
+      - name: Transform Code Coverage Results
         run: ./gradlew transform
 
 #   parse_coverage:
