@@ -54,13 +54,95 @@ task checkExists {
 
 task transform {
   def jacoco = "target/site/jacoco/jacoco.xml";
-  println "***transform working directory: ${new File(".").absolutePath}"
   ext.srcFile = project.file(jacoco)
   inputs.file srcFile
   doLast {
+    def output = StringBuilder.newInstance()
     def parser = new groovy.xml.XmlSlurper()
     parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
     parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     def report = parser.parse(srcFile)
+    def list = []
+    def packageName
+
+    report.package.each { pkg ->
+        packageName = pkg.@name.text()
+        output << "## ${packageName}\n"
+        output << "\n"
+
+        pkg.class.each { cls ->
+            def clsName = cls.@name.text().replaceAll(packageName, "").replaceAll("/", "")
+            output << "### ${clsName}\n"
+
+            output << "\n" 
+            output << "  * _classSummary\n"
+
+            cls.counter.each { cnt ->
+                if (cnt.@type.text() == "INSTRUCTION" ) {
+                    output << "    * INSTRUCTION\n"
+                    output << "      * missed: ${cnt.@missed.text()}\n"
+                    output << "      * covered: ${cnt.@covered.text()}\n"
+                }
+
+                if (cnt.@type.text() == "LINE" ) {
+                    output << "    * LINE\n"
+                    output << "      * missed: ${cnt.@missed.text()}\n"
+                    output << "      * covered: ${cnt.@covered.text()}\n"
+                }
+
+                if (cnt.@type.text() == "COMPLEXITY" ) {
+                    output << "    * COMPLEXITY\n"
+                    output << "      * missed: ${cnt.@missed.text()}\n"
+                    output << "      * covered: ${cnt.@covered.text()}\n"
+                }
+
+                if (cnt.@type.text() == "METHOD" ) {
+                    output << "    * METHOD\n"
+                    output << "      * missed: ${cnt.@missed.text()}\n"
+                    output << "      * covered: ${cnt.@covered.text()}\n"
+                }
+            }
+
+            output << "\n"
+            output << "  * _methods\n"
+
+            cls.method.each { mth ->
+                def mthName = mth.@name.text().replaceAll("<", "").replaceAll(">", "")
+                output << "    * ${mthName}\n"
+
+                mth.counter.each { ctr -> 
+                    if (ctr.@type.text() == "INSTRUCTION" ) {
+                        output << "      * INSTRUCTION\n"
+                        output << "        * missed: ${ctr.@missed.text()}\n"
+                        output << "        * covered: ${ctr.@covered.text()}\n"
+                    }
+
+                    if (ctr.@type.text() == "LINE" ) {
+                        output << "      * LINE\n"
+                        output << "        * missed: ${ctr.@missed.text()}\n"
+                        output << "        * covered: ${ctr.@covered.text()}\n"
+                    }
+
+                    if (ctr.@type.text() == "COMPLEXITY" ) {
+                        output << "      * COMPLEXITY\n"
+                        output << "        * missed: ${ctr.@missed.text()}\n"
+                        output << "        * covered: ${ctr.@covered.text()}\n"
+                    }
+
+                    if (ctr.@type.text() == "METHOD" ) {
+                        output << "      * METHOD\n"
+                        output << "        * missed: ${ctr.@missed.text()}\n"
+                        output << "        * covered: ${ctr.@covered.text()}\n"
+                    }
+                }
+
+                output << "\n"
+            }
+        }
+
+        output << "\n"
+    }
+
+    println output.toString()
   }
 }
