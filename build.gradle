@@ -41,9 +41,44 @@ test {
   useJUnitPlatform()
 }
 
+task checkExists {
+  def jacoco = "jacoco.xml";
+  println "***checkExists: ${new File(".").absolutePath}"
+  if (project.file(jacoco).exists()) {
+      println "found: ${project.file(jacoco)}"
+  } else {
+      def message = "missing: ${project.file(jacoco)}"
+      println message
+  }
+}
+
+task checkExistsFq {
+  def jacoco = "target/site/jacoco/jacoco.xml";
+  println "***checkExistsFq: ${new File(".").absolutePath}"
+  if (project.file(jacoco).exists()) {
+      println "found: ${project.file(jacoco)}"
+  } else {
+      def message = "missing: ${project.file(jacoco)}"
+      println message
+  }
+}
+
+
 task transform {
-  println new File(".").absolutePath
+  println "***transform: ${new File(".").absolutePath}"
   ext.srcFile = file('jacoco.xml')
+  inputs.file srcFile
+  doLast {
+    def parser = new groovy.xml.XmlSlurper()
+    parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+    parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+    def report = parser.parse(srcFile)
+  }
+}
+
+task transformFq {
+  println "***transformFq: ${new File(".").absolutePath}"
+  ext.srcFile = project.file('target/site/jacoco/jacoco.xml')
   inputs.file srcFile
   doLast {
     def parser = new groovy.xml.XmlSlurper()
