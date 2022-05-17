@@ -39,3 +39,13 @@ dependencies {
 test {
   useJUnitPlatform()
 }
+
+task hello {
+  doFirst {
+    print 'Hello'
+  }
+  
+  doLast {
+    println(', World')
+  }  
+}
