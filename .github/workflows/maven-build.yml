@@ -34,7 +34,7 @@ jobs:
       - name: Grant Permissions to Gradle Wrapper
         run: chmod +x gradlew
       - name: Check Code Coverage File Exists
-        run: ./gradlew checkExistsF
+        run: ./gradlew checkExists
       - name: Transform Code Coverage Results
         run: ./gradlew transform
 
