@@ -53,8 +53,11 @@ task checkExists {
 
 task transform {
   def jacoco = "target/site/jacoco/jacoco.xml";
+  def markdown = "target/site/jacoco/jacoco.md";
   ext.srcFile = project.file(jacoco)
+  ext.destFile = new File(markdown)
   inputs.file srcFile
+  outputs.file destFile
   doLast {
     def output = StringBuilder.newInstance()
     def parser = new groovy.xml.XmlSlurper()
@@ -141,7 +144,7 @@ task transform {
 
         output << "\n"
     }
-
-    println output.toString()
+        
+    destFile << output.toString()
   }
 }
