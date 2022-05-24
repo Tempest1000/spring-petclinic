@@ -37,3 +37,9 @@ jobs:
         run: ./gradlew checkExists
       - name: Transform Code Coverage Results
         run: ./gradlew transform
+      - name: Archive Code Coverage Markdown File
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-markdown
+          path: target/site/jacoco/jacoco.md
+          retention-days: 1
