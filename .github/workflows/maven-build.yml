@@ -8,6 +8,16 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      mvn_goals:
+        description: "Run Build"
+        type: string
+        default: "clean verify"
+      include_gradle_steps:
+        description: "Run the Gradle wrapper & transforms"
+        type: boolean
+        default: true
 
 jobs:
   build_and_test:
